@@ -1,4 +1,4 @@
-package bubblebubble;
+package mapletest;
 
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
@@ -14,7 +14,7 @@ public class BubbleApp extends JFrame implements Initable{
 	private static final String TAG = "BubbleApp : ";
 	JLabel laBackground;
 	private Player player;
-	
+	private Enemy enemy;
 	public BubbleApp() {
 		init(); //new
 		setting();
@@ -32,12 +32,13 @@ public class BubbleApp extends JFrame implements Initable{
 	public void init() {
 		laBackground = new JLabel(new ImageIcon("image/background.png"));
 		player = new Player();
+		enemy = new Enemy();
 	}
 	
 	@Override
 	public void setting() {
-		setTitle("버블버블");
-		setSize(1000, 639);
+		setTitle("메이플 테스트");
+		setSize(1290, 759);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setLayout(null);
 		setContentPane(laBackground);
@@ -46,7 +47,7 @@ public class BubbleApp extends JFrame implements Initable{
 	@Override
 	public void batch() {
 		add(player); //getContentPane()생략 가능 
-		
+		add(enemy);
 	}
 
 	@Override
@@ -67,9 +68,17 @@ public class BubbleApp extends JFrame implements Initable{
 			public void keyReleased(KeyEvent e) {
 				if(e.getKeyCode() == KeyEvent.VK_RIGHT) {
 					player.isRight = false;
+					player.isMove = false;
+					
 				} else if(e.getKeyCode() == KeyEvent.VK_LEFT) {
-					player.isRight = false;
+					player.isLeft = false;
+					player.isMove = false;
+					
+				} else if(e.getKeyCode() == KeyEvent.VK_SPACE) {
+					player.isUp = false;
+					player.isMove = false;
 				} 
+				
 			}
 		});
 		
