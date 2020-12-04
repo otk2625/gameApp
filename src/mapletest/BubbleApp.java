@@ -32,7 +32,8 @@ public class BubbleApp extends JFrame implements Initable{
 	public void init() {
 		laBackground = new JLabel(new ImageIcon("image/background.png"));
 		player = new Player();
-		enemy = new Enemy();
+		enemy = new EnemyMushroom("image/ÁÖÈ²¹ö¼¸.gif",555,400);
+		
 	}
 	
 	@Override

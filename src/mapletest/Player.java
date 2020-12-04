@@ -2,16 +2,21 @@ package mapletest;
 
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 
 public class Player extends JLabel {
 
 	public Player player = this;
 	public final static String TAG = "Player : ";
-
+	EnemyMushroom enemy;
 	public ImageIcon icPlayerR, icPlayerL, icPlayerW, icPlayerJ, icPlayerWL, icPlayerJL;
 	public int x = 55;
 	public int y = 490;
+	public int speed = 0;
 
+	int width = 80;
+	int height = 110;
+	
 	public boolean isRight = false;
 	public boolean isLeft = false;
 	public boolean isUp = false;
@@ -32,8 +37,31 @@ public class Player extends JLabel {
 		setIcon(icPlayerW);
 		setSize(80, 110);
 		setLocation(x, y);
+		
+		제드();
 	}
+	public void 제드()
+	{
+		new Thread(new Runnable() {
+	         @Override
+	         public void run() {
+	            // 충돌 호출
+	            while (true) {
+	               System.out.println("이즈리얼");
+	               if (Crash(player.x, player.y, enemy.x, enemy.y, player.width, player.height, enemy.width,
+	                     enemy.height)) {
+	                  System.out.println("충돌 발생");
+	                  int result = JOptionPane.showConfirmDialog(null, "죽었습니다...", "메이플스토리", JOptionPane.OK_OPTION);
+	                  if (result == JOptionPane.OK_OPTION) {
+	                     System.exit(0);
+	                  }
 
+	               }
+	            }
+	            // 충돌 호출
+	         }
+	      }).start();
+	}
 	public void moveWating() {
 		if (isMove == false) {
 			setIcon(icPlayerW);
@@ -213,6 +241,19 @@ public class Player extends JLabel {
 		}
 
 	}
+	
+	// 충돌 함수
+	   public boolean Crash(int playerX, int playerY, int enemyX, int enemyY, int playerW, int playerH, int enemyW,
+	         int enemyH) {
+	      boolean check = false;
+	      if (Math.abs((playerX + (playerW / 2)) - (enemyX + enemyW / 2 + 20)) < (enemyW / 2 + playerW / 2 - 60)) {
+	         check = true;
+	      } else {
+	         check = false;
+	      }
+	      return check;
+	   }
+	   // end 충돌
 
 	// 구현안함
 	public void attack() {
