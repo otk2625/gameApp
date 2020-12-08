@@ -19,7 +19,8 @@ public class Enemy extends JLabel {
 	public boolean isLeft = false;
 
 	public boolean isMove = false;
-
+	int width = 200;
+	int height = 210;
 
 	public int floor; // 535, 415, 295, 177
 

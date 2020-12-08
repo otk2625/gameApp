@@ -6,6 +6,8 @@ import java.awt.event.KeyEvent;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 
 public class BubbleApp extends JFrame implements Initable{
 	// 컨텍스트는 항상 저장
@@ -13,8 +15,10 @@ public class BubbleApp extends JFrame implements Initable{
 	// 태그 필수
 	private static final String TAG = "BubbleApp : ";
 	JLabel laBackground;
-	private Player player;
-	private Enemy enemy;
+	public Player player;
+	public EnemyMushroom enemy;
+	skil sr;
+	
 	public BubbleApp() {
 		init(); //new
 		setting();
@@ -27,13 +31,15 @@ public class BubbleApp extends JFrame implements Initable{
 	public static void main(String[] args) {
 		new BubbleApp();
 	}
-
+	
+	
 	@Override
 	public void init() {
 		laBackground = new JLabel(new ImageIcon("image/background.png"));
 		player = new Player();
 		enemy = new EnemyMushroom("image/주황버섯.gif",555,400);
-		
+	    Thread c = new Thread(new col());
+	    c.start();
 	}
 	
 	@Override
@@ -57,11 +63,14 @@ public class BubbleApp extends JFrame implements Initable{
 			@Override
 			public void keyPressed(KeyEvent e) {
 				if(e.getKeyCode() == KeyEvent.VK_RIGHT) {
-					player.moveRight();
+					player.moveRight1();
 				} else if(e.getKeyCode() == KeyEvent.VK_LEFT) {
 					player.moveLeft();
 				} else if(e.getKeyCode() == KeyEvent.VK_UP) {
 					player.moveUp();
+				} else if(e.getKeyCode() == KeyEvent.VK_CONTROL) {
+					add(player.skilshot());
+					sr = player.skilshot();
 				}
 			}
 			
@@ -84,5 +93,42 @@ public class BubbleApp extends JFrame implements Initable{
 		});
 		
 	}
-
+	
+	class col extends Thread {
+		@Override
+		public void run() {
+			
+			while(true) {
+				try {
+					Thread.sleep(10);
+					if (Crash(sr.x, sr.y, enemy.x, enemy.y, sr.width, sr.height, enemy.width, enemy.height)) {
+						sr.setIcon(null);
+						sr.setVisible(false);
+						sr.isattack = false;
+						
+						System.out.println("스킬 적중!");
+						
+						sr.x = 9999;
+						
+					}
+					if (Crash(player.x, player.y, enemy.x, enemy.y, player.width, player.height, enemy.width, enemy.height)) {
+						System.out.println("충돌 발생");
+						
+					}
+				} catch (Exception e) {
+					e.getMessage();
+				}
+			}
+		}
+	}
+	public boolean Crash(int playerX, int playerY, int enemyX, int enemyY, int playerW, int playerH, int enemyW,
+			int enemyH) {
+		boolean check = false;
+		if (Math.abs((playerX + (playerW / 2)) - (enemyX + enemyW / 2 + 20)) < (enemyW / 2 + playerW / 2 - 60)) {
+			check = true;
+		} else {
+			check = false;
+		}
+		return check;
+	}
 }

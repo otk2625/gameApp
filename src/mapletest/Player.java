@@ -16,7 +16,7 @@ public class Player extends JLabel {
 
 	int width = 80;
 	int height = 110;
-	
+
 	public boolean isRight = false;
 	public boolean isLeft = false;
 	public boolean isUp = false;
@@ -37,32 +37,27 @@ public class Player extends JLabel {
 		setIcon(icPlayerW);
 		setSize(80, 110);
 		setLocation(x, y);
-		
-		제드();
-	}
-	public void 제드()
-	{
-		new Thread(new Runnable() {
-	         @Override
-	         public void run() {
-	            // 충돌 호출
-	            while (true) {
-	               System.out.println("이즈리얼");
-	               if (Crash(player.x, player.y, enemy.x, enemy.y, player.width, player.height, enemy.width,
-	                     enemy.height)) {
-	                  System.out.println("충돌 발생");
-	                  int result = JOptionPane.showConfirmDialog(null, "죽었습니다...", "메이플스토리", JOptionPane.OK_OPTION);
-	                  if (result == JOptionPane.OK_OPTION) {
-	                     System.exit(0);
-	                  }
 
-	               }
-	            }
-	            // 충돌 호출
-	         }
-	      }).start();
 	}
+
+	public void 제드() {
+
+		// 충돌 호출
+		System.out.println("이즈리얼");
+		if (Crash(player.x, player.y, enemy.x, enemy.y, player.width, player.height, enemy.width, enemy.height)) {
+			System.out.println("충돌 발생");
+			int result = JOptionPane.showConfirmDialog(null, "죽었습니다...", "메이플스토리", JOptionPane.OK_OPTION);
+			if (result == JOptionPane.OK_OPTION) {
+				System.exit(0);
+			}
+
+		}
+		// 충돌 호출
+
+	}
+
 	public void moveWating() {
+		System.out.println("움직임 감지");
 		if (isMove == false) {
 			setIcon(icPlayerW);
 		}
@@ -78,6 +73,7 @@ public class Player extends JLabel {
 		new Thread(new Runnable() {
 			@Override
 			public void run() {
+
 				try {
 					Thread.sleep(300);
 				} catch (InterruptedException e) {
@@ -103,6 +99,34 @@ public class Player extends JLabel {
 		}).start();
 	}
 
+	public void moveRight1() {
+		System.out.println(TAG + "moveRight()");
+
+		if (isRight == false) {
+			new Thread(new Runnable() {
+				@Override
+				public void run() {
+
+					isRight = true;
+					while (isRight) {
+						// 오른쪽으로 보는중
+						x++;
+						setLocation(x, y); // 내부에 repaint() 존재
+						try {
+							Thread.sleep(3);
+							setIcon(icPlayerW);
+
+						} catch (InterruptedException e) {
+							e.printStackTrace();
+						}
+					}
+					setIcon(icPlayerW);
+
+				}
+			}).start();
+		}
+	}
+
 	public void moveRight() {
 		System.out.println(TAG + "moveRight()");
 
@@ -112,17 +136,33 @@ public class Player extends JLabel {
 				public void run() {
 
 					setIcon(icPlayerR);
-					
-
 					isMove = true;
+					new Thread(new Runnable() {
+						@Override
+						public void run() {
+							try {
+								Thread.sleep(300);
+								setIcon(new ImageIcon("image/캐릭오른쪽걷기2.png"));
+								Thread.sleep(300);
+								setIcon(new ImageIcon("image/캐릭오른쪽걷기3.png"));
+								Thread.sleep(300);
+								setIcon(new ImageIcon("image/캐릭오른쪽걷기4.png"));
+							} catch (InterruptedException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+						}
+					}).start();
+
 					isRight = true;
 					seewhere = true;
 					while (isRight) {
+
 						x++;
 						setLocation(x, y); // 내부에 repaint() 존재
+
 						try {
 							Thread.sleep(5);
-
 						} catch (InterruptedException e) {
 							e.printStackTrace();
 						}
@@ -241,22 +281,73 @@ public class Player extends JLabel {
 		}
 
 	}
-	
+
 	// 충돌 함수
-	   public boolean Crash(int playerX, int playerY, int enemyX, int enemyY, int playerW, int playerH, int enemyW,
-	         int enemyH) {
-	      boolean check = false;
-	      if (Math.abs((playerX + (playerW / 2)) - (enemyX + enemyW / 2 + 20)) < (enemyW / 2 + playerW / 2 - 60)) {
-	         check = true;
-	      } else {
-	         check = false;
-	      }
-	      return check;
-	   }
-	   // end 충돌
+	public boolean Crash(int playerX, int playerY, int enemyX, int enemyY, int playerW, int playerH, int enemyW,
+			int enemyH) {
+		boolean check = false;
+		if (Math.abs((playerX + (playerW / 2)) - (enemyX + enemyW / 2 + 20)) < (enemyW / 2 + playerW / 2 - 60)) {
+			check = true;
+		} else {
+			check = false;
+		}
+		return check;
+	}
+	// end 충돌
 
 	// 구현안함
 	public void attack() {
+		
+	}
+	
+	public skil skilshot() {
+		skil s = new skil(x,y);
+		return s;
+	}
+
+	static int c = 0;
+}
+
+class skil extends JLabel {
+	public int x;
+	public int y;
+	int width = 120;
+	int height = 110;
+	ImageIcon skill;
+	boolean isattack = true;
+	public skil(int x, int y) {
+		this.x = x; this.y = y;
+		skill = new ImageIcon("image/jang.png");
+		
+//		System.out.println(Player.c + "생성완료");
+		Player.c++;
+		setIcon(skill);
+		setSize(120, 110);
+		setLocation(x, y);
+		
+		skill();
+	}
+
+	public void skill() {
+		new Thread(new Runnable() {
+			@Override
+			public void run() {
+
+				while (isattack) {
+			
+					x++;
+					setLocation(x, y); // 내부에 repaint() 존재
+					try {
+						Thread.sleep(3);
+
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+				}
+
+			}
+		}).start();
 
 	}
+
 }

@@ -5,15 +5,14 @@ import java.util.*;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 
-public class EnemyMushroom extends Enemy {
-
+public class EnemyMushroom extends JLabel {
 	public EnemyMushroom EnemyMushroom = this;
 	public final static String TAG = "EnemyMushroom : ";
 
 	public ImageIcon enemyMove;
 	public int x = 555;
 	public int y = 400;
-	public int speed = 5;
+	public int speed = 10;
 	int 이즈리얼 = 0;
 	public boolean isRight = false;
 	public boolean isLeft = false;
@@ -95,7 +94,7 @@ public class EnemyMushroom extends Enemy {
 						speed = 100;
 						이즈리얼 = rd.nextInt(3);
 					}
-					speed = 5;	
+					speed = 10;	
 				}	
 			}
 		}).start();
@@ -109,7 +108,7 @@ public class EnemyMushroom extends Enemy {
 				@Override
 				public void run() {
 					while (true) {
-
+	
 						if (이즈리얼 == 1) {
 							x++;
 							if (x >= 1100) {
