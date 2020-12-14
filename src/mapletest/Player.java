@@ -13,7 +13,7 @@ public class Player extends JLabel {
 	public int x = 55;
 	public int y = 490;
 	public int speed = 0;
-
+	public int hp = 100;
 	int width = 80;
 	int height = 110;
 
@@ -317,12 +317,12 @@ class skil extends JLabel {
 	boolean isattack = true;
 	public skil(int x, int y) {
 		this.x = x; this.y = y;
-		skill = new ImageIcon("image/jang.png");
+		skill = new ImageIcon("image/스킬샷.png");
 		
 //		System.out.println(Player.c + "생성완료");
 		Player.c++;
 		setIcon(skill);
-		setSize(120, 110);
+		setSize(400, 110);
 		setLocation(x, y);
 		
 		skill();
@@ -334,7 +334,6 @@ class skil extends JLabel {
 			public void run() {
 
 				while (isattack) {
-			
 					x++;
 					setLocation(x, y); // 내부에 repaint() 존재
 					try {

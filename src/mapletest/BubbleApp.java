@@ -1,5 +1,6 @@
 package mapletest;
 
+import java.awt.Container;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
@@ -14,11 +15,12 @@ public class BubbleApp extends JFrame implements Initable{
 	private BubbleApp bubbleApp = this;
 	// 태그 필수
 	private static final String TAG = "BubbleApp : ";
+	
 	JLabel laBackground;
 	public Player player;
 	public EnemyMushroom enemy;
 	skil sr;
-	
+	Container c = getContentPane();
 	public BubbleApp() {
 		init(); //new
 		setting();
@@ -71,6 +73,7 @@ public class BubbleApp extends JFrame implements Initable{
 				} else if(e.getKeyCode() == KeyEvent.VK_CONTROL) {
 					add(player.skilshot());
 					sr = player.skilshot();
+					
 				}
 			}
 			
@@ -100,20 +103,25 @@ public class BubbleApp extends JFrame implements Initable{
 			
 			while(true) {
 				try {
+					System.out.println("asd");
 					Thread.sleep(10);
 					if (Crash(sr.x, sr.y, enemy.x, enemy.y, sr.width, sr.height, enemy.width, enemy.height)) {
-						sr.setIcon(null);
-						sr.setVisible(false);
-						sr.isattack = false;
-						
 						System.out.println("스킬 적중!");
-						
-						sr.x = 9999;
-						
+						enemy.hp -= 20;
+						System.out.println("몬스터 :" + enemy.hp);
+						if(enemy.hp == 0) {
+							enemy.setIcon(null);
+							enemy.x = 99999;
+							c.remove(enemy);
+						}
+						sr.x = -99999;
+						c.remove(sr);
 					}
 					if (Crash(player.x, player.y, enemy.x, enemy.y, player.width, player.height, enemy.width, enemy.height)) {
 						System.out.println("충돌 발생");
-						
+						player.hp -= 10;
+						System.out.println("사용자hp"+ player.hp);
+						Thread.sleep(2000);
 					}
 				} catch (Exception e) {
 					e.getMessage();
